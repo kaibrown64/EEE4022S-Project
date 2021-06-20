@@ -25,13 +25,14 @@ done
 # Loop through INDIR for .pcaps
 echo "--- Converting and labelling..."
 cd $INDIR
-for filename in ${INDIR}*.pcap; do
+for filename in ${INDIR}*; do
 	#echo "${filename}\n"
 	[ -e "$filename" ] || continue
 	# Extract resolution and number of test
 	TAGS=$(basename "$filename" .pcap)
 	RES=$(echo $TAGS | cut -d- -f1)
 	NUM=$(echo $TAGS | cut -d- -f2)
+	LEN=$(echo $TAGS | cut -d- -f3)
 	echo $RES
 	echo $NUM
 	#echo "${TAGS}\n"
@@ -39,7 +40,7 @@ for filename in ${INDIR}*.pcap; do
 	sudo netmate -r /usr/local/etc/netmate/netAI-rules-stats-ni.xml -f $filename
 	# Run python script to label the data and delete netmate.arff
 	# Arguments: inputFile, outputFile, resolution, testNumber
-	python3 ${SOURCEFILES}label_arff.py "${OUTDIR}netmate.arff" "${OUTDIR}${RES}-${NUM}.arff" "$RES" "$NUM"
+	python3 ${SOURCEFILES}label_arff.py "${OUTDIR}netmate.arff" "${OUTDIR}${RES}-${NUM}-${LEN}.arff" "$RES" "$NUM" "$LEN"
 done
 
 echo "--- Combining .arffs..."

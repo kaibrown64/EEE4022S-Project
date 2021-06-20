@@ -1,8 +1,3 @@
-# This script was adapted from Max van der Merwe
-# Github repository https://github.com/maxnvdm/SDNTrafficClassification
-# MIT Disclaimer:
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -14,16 +9,19 @@ from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 import time
 import subprocess
-import Random
 
 resolution = sys.argv[1]
+
+#/mnt/vol1/vulatest/pcap
+#/home/max/
+#tcpdump = 'sudo timeout 930 tcpdump -i d1-eth0 -w /mnt/vol1/youtubetest.pcap'
+#process = subprocess.Popen(tcpdump.split())
 opts = Options()
 
 # Turn to false to open friefox
 opts.headless = False
 
 starttime = time.time()
-videoNum = randInt(1, 8)
 
 # Load youtube in firefox
 browser = Firefox(options=opts)
@@ -37,9 +35,9 @@ except TimeoutException:
 time.sleep(2)
 
 # Find video thumbnail and click on it
-print("playing video")
-videos = browser.find_elements_by_id('thumbnail')
-videos[videoNum].click()
+print("playing first video")
+videos = browser.find_elements_by_id('img')
+videos[3].click()
 try:
     myElem = WebDriverWait(browser, delay).until(EC.presence_of_element_located((By.ID, 'overlays')))
     print("Page is ready")
@@ -67,8 +65,12 @@ time.sleep(2)
 quality = browser.find_element_by_xpath("//span[contains(string(),'" + resolution + "')]")
 quality.click()
 
-print("Sleeping for 1000 seconds ")
-time.sleep(1000)
 
-print("Video finished")
+time.sleep(900)
+
+print("First video finished")
+
+#time.sleep(640)
+
+    
 browser.quit()

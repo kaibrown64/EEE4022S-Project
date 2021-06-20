@@ -11,6 +11,7 @@ folder_in = sys.argv[1] # Folder containing only .arffs
 file_out = sys.argv[2] # Ouput combined .arff
 
 def main():
+    print("___Combining arffs___")
     inputFiles = os.listdir(folder_in)
     # Open the first file, and append the rest
     with open(folder_in + inputFiles[0], 'r') as mainFile:

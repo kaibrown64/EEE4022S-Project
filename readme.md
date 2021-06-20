@@ -1,13 +1,42 @@
-# Run tcpdump from desktop on enp0s3 (or your interface of choice)
-# timeout after 660 seconds (11 mins) and save packets capture in volume-1/pcaps
-sudo timeout 900 tcpdump -i enp0s3 -w ~/Desktop/temp/volume-1/15-min-pcaps/144p-1.pcap
-# run selenium script youtube_selenium.py, watching a random video for 10 minutes
-python3 ~/Desktop/volume-1/youtube_selenium.py 144p
-# Use netmate to exctract traffic flows
-sudo netmate -r /usr/local/etc/netmate/netAI-rules-stats-ni.xml -f ~/Desktop/volume-1/pcaps_cleaned/144p-1.pcap
-# Run weka to train the classifier
-./weka.sh
+EEE4022S Project 2021
+Author: Kai Brown
+Supervisor: Joyce Mwangama
+Electrical Engineering Department
+University of Cape Town
 
-sudo python3 /home/kai/Desktop/volume-1/labelarff.py /home/kai/Desktop/volume-1/arffs/netmate.arff /home/kai/Desktop/volume-1/arffs/144p-3.arff 144p 3 
+Inferring the Resolution of Encrypted Youtube Streaming Traffic using Machine Learning
 
-sudo netmate -r /usr/local/etc/netmate/netAI-rules-stats-ni.xml -f ~/Desktop/volume-1/pcaps/144p-2.pcap
+=== Summary ===
+This github contains all the source code and packet capture data used in the Undergraduate thesis Inferring the Resolution of Encrypted Youtube Streaming Traffic using Machine Learning.
+This project involved recording encryted traffic of youtube being watched at different qualities, and training machine learning classifiers to predict the quality.
+
+=== Requirements ===
+This project was run on an Ubuntu 20.04 LTS Virtual Machine
+pip v21.1.2
+python v3.8.5
+Java JDK v11.0.11
+Java JRE v11.0.11
+Selenium v3.141.0
+Wireshark v3.2.3
+Netmate flow-calc v0.9.5
+weka v3.8.5
+
+== Source Code ===
+---selenium_youtube.py
+automatically visits youtube, selects a random video, and changes the quality to a set figure.
+
+---split_pcaps.sh
+Uses editcap from Wireshark to separate internet traffic, recorded with tcpdump on enp0s3 (VM ethernet NAT), to smaller files of a given packet count
+
+--convert_pcaps.sh
+Invokes netmate on individual pcap files, labels .arff files with resolution, and combines them to one .arff
+
+--live_classifier.sh
+A permanent bash loop that records a set amount of packets, invokes netmate to make it a .arff, removes source and destination ip addresses and ports, 
+and uses a saved model to make a prediction on the data.
+
+--accuracy.py
+Calculates the accuracy of live classification outputs, scanning the ouput file as a string and searching for predictions
+
+
+
